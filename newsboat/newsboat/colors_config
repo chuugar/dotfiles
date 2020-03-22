@@ -1,0 +1,21 @@
+color background          color250   color234
+
+color listnormal          color250   color234
+color listnormal_unread   red    color234
+
+color listfocus           yellow  blue   bold
+color listfocus_unread    color234   color252
+
+color info                color250   color234
+color article             color250   color234
+
+color listfocus                                               color234 color252
+color info                                                    color234 color252
+color listfocus_unread                                        color234 color252
+# highlights
+highlight article "^(Feed|Link):.*$" color46 default bold
+highlight article "^(Title|Date|Author):.*$" color39 default bold
+highlight article "https?://[^ ]+" color46 default underline
+highlight article "\\[[0-9]+\\]" color63 default bold
+highlight article "\\[image\\ [0-9]+\\]" color63 default bold
+highlight feedlist "^─.*$" color61 color235 bold

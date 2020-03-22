@@ -1,0 +1,19 @@
+# applications
+alias pdflatex="pdflatex -output-directory=./.outputs"
+alias fakewebcam="ffmpeg -f x11grab -r 15 -s 1920x1080 -i :0.0+0,0 -vcodec rawvideo -pix_fmt yuv420p -threads 0 -f v4l2 /dev/video0"
+alias mutt='mutt -F ~/.config/mutt/muttrc'
+alias wpa_cli="/sbin/wpa_cli -i wlp3s0"
+alias mpv="mpv --force-window"
+alias w3m="w3m -B"
+alias ls="ls --color=auto"
+alias wal="wal -o ${XDG_CONFIG_HOME}/wal/reload_hook.sh"
+
+alias mkvirtualenv="mkvirtualenv --python=$(which python3)"
+
+# ssh
+
+# android
+alias adb_mount="adb shell mount -t tmpfs none /sdcard"
+alias go-mtpfs="go-mtpfs -usb-timeout=60000"
+
+# vim: ft=sh

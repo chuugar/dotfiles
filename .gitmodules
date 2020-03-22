@@ -1,0 +1,18 @@
+[submodule "vim/vim/pack/git/start/wal"]
+	path = vim/vim/pack/git/start/wal
+	url = https://github.com/dylanaraps/wal.vim.git
+[submodule "vim/vim/pack/git/start/ultisnips"]
+	path = vim/vim/pack/git/start/ultisnips
+	url = https://github.com/SirVer/ultisnips.git
+[submodule "vim/vim/pack/git/start/vim-snippets"]
+	path = vim/vim/pack/git/start/vim-snippets
+	url = https://github.com/honza/vim-snippets.git
+[submodule "vim/vim/pack/git/start/vim-fugitive"]
+	path = vim/vim/pack/git/start/vim-fugitive
+	url = https://github.com/tpope/vim-fugitive
+[submodule "vim/vim/pack/git/start/vim-surround"]
+	path = vim/vim/pack/git/start/vim-surround
+	url = https://github.com/tpope/vim-surround.git
+[submodule "vim/vim/pack/git/start/vim-virtualenv"]
+	path = vim/vim/pack/git/start/vim-virtualenv
+	url = https://github.com/jmcantrell/vim-virtualenv.git

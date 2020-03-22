@@ -1,0 +1,243 @@
+[paddings]
+inner = 1
+outer = 1
+
+[colors]
+background = ${xrdb:color0}
+foreground = ${xrdb:color7}
+
+black = ${xrdb:color0}
+dark_grey = ${xrdb:color8}
+
+dark_red = ${xrdb:color1}
+red = ${xrdb:color9}
+
+dark_green = ${xrdb:color2}
+green = ${xrdb:color10}
+
+dark_yellow = ${xrdb:color3}
+yellow = ${xrdb:color11}
+
+dark_blue = ${xrdb:color4}
+blue = ${xrdb:color12}
+
+dark_magenta = ${xrdb:color13}
+magenta = ${xrdb:color5}
+
+dark_cyan = ${xrdb:color14}
+cyan = ${xrdb:color6}
+
+white = ${xrdb:color15}
+
+[bar/main]
+monitor = VGA-0
+dpi = 192
+wm-restack = bspwm
+
+background = "${xrdb:color14}"
+foreground = ${colors.foreground}
+
+height = 30
+margin-bottom = 10
+
+font-0=Sauce\ Code\ Pro\ Nerd\ Font:size=4;2
+font-1=Siji:pixelsize=12;2
+font-2=GohuFont\ Powerline:pixelsize=10;0
+
+module-margin = 1
+offset-y = 10
+padding-right = 5
+padding-left = 5
+
+modules-left = bspwm
+modules-center = date
+
+modules-right = mpd volume
+
+[bar/lite]
+inherit = bar/main
+monitor = DVI-0
+
+module-left = bspwm
+module-center = date
+modules-right = volume
+
+[bar/singlemonitor_top]
+inherit = bar/main
+monitor = DVI-0
+
+modules-left = volume
+modules-center = mpd
+modules-right = date
+
+[bar/singlemonitor_bottom]
+inherit = bar/main
+monitor = DVI-0
+bottom = true
+modules-left =
+modules-center = bspwm
+modules-right =
+
+[module/bspwm]
+type = internal/bspwm
+pin-workspaces = true
+
+inline-mode = false
+enable-click = true
+enable-scroll = false
+reverse-scroll = false
+
+ws-icon-0 = I;
+ws-icon-1 = II;
+ws-icon-2 = III;
+ws-icon-3 = IV;
+ws-icon-4 = V;
+ws-icon-5 = VI;
+ws-icon-6 = VII;
+ws-icon-7 = VIII;
+ws-icon-8 = IX;
+
+ws-icon-9 = 1;
+ws-icon-10 = 2;
+ws-icon-11 = 3;
+ws-icon-12 = 4;
+ws-icon-13 = 5;
+ws-icon-14 = 6;
+ws-icon-15 = 7;
+ws-icon-16 = 8;
+ws-icon-17 = 9;
+
+ws-icon-default = 
+
+format = <label-state> <label-mode>
+label-monitor = %name%
+
+label-dimmed-foreground = #555
+label-dimmed-underline = #3f3f3f
+label-dimmed-focused-background = #f00
+label-dimmed-padding = 2
+
+label-focused = %icon%
+label-focused-foreground = ${colors.background}
+label-focused-background = ${colors.foreground}
+label-focused-padding = 2
+label-empty-padding = 2
+
+label-occupied = %icon%
+label-occupied-underline = #555555
+label-occupied-background = ${colors.background}
+label-occupied-foreground = ${colors.foreground}
+label-occupied-padding = 2
+
+label-urgent = %icon%
+label-urgent-foreground = ${colors.black}
+label-urgent-background = ${colors.red}
+label-urgent-underline = #9b0a20
+label-urgent-padding = 2
+
+label-empty = %icon%
+label-empty-background = ${colors.background}
+label-empty-foreground = ${colors.foreground}
+
+
+[module/memory]
+type = internal/memory
+
+label = %gb_used%
+label-background = ${colors.black}
+label-foreground = ${colors.white}
+label-padding-right = ${paddings.outer}
+label-padding-left = ${paddings.inner}
+
+format-prefix = " "
+format-prefix-foreground = ${colors.background}
+format-prefix-background = ${colors.green}
+format-prefix-padding-right = ${paddings.inner}
+format-prefix-padding-left = ${paddings.outer}
+
+
+[module/volume]
+type= internal/pulseaudio
+sink = alsa_output.pci-0000_00_1b.0.analog-stereo
+
+format-volume = <ramp-volume><label-volume>
+
+label-volume-background = ${colors.background}
+label-volume-foreground = ${colors.foreground}
+label-volume-padding-right = ${paddings.outer}
+label-volume-padding-left = ${paddings.inner}
+
+label-muted = "婢"
+label-muted-background = ${colors.red}
+label-muted-foreground = ${colors.background}
+label-muted-padding-right = ${paddings.outer}
+label-muted-padding-left = ${paddings.inner}
+
+ramp-volume-0 = "奄"
+ramp-volume-0-background = ${colors.green}
+ramp-volume-0-foreground = ${colors.background}
+ramp-volume-0-padding-right = ${paddings.outer}
+ramp-volume-0-padding-left = ${paddings.inner}
+
+ramp-volume-1 = "奔"
+ramp-volume-1-background = ${colors.green}
+ramp-volume-1-foreground = ${colors.background}
+ramp-volume-1-padding-right = ${paddings.outer}
+ramp-volume-1-padding-left = ${paddings.inner}
+
+ramp-volume-2 = "墳"
+ramp-volume-2-background = ${colors.green}
+ramp-volume-2-foreground = ${colors.foreground}
+ramp-volume-2-padding-right = ${paddings.outer}
+ramp-volume-2-padding-left = ${paddings.inner}
+
+
+[module/date]
+type = internal/date
+interval = 60
+
+date = "%a %d"
+date-alt = "%d %b %Y"
+
+time = %H:%M
+
+format-prefix = ""
+format-prefix-foreground = ${colors.background}
+format-prefix-background = ${colors.foreground}
+format-prefix-padding-right = ${paddings.inner}
+format-prefix-padding-left = ${paddings.outer}
+
+label = %time% 
+label-font = 0
+label-background = ${colors.background}
+label-foreground = ${colors.foreground}
+label-padding-right = ${paddings.outer}
+label-padding-left = ${paddings.inner}
+
+
+[module/mpd]
+type = internal/mpd
+
+format-playing-prefix = "契"
+format-playing-prefix-foreground = ${colors.background}
+format-playing-prefix-background = ${colors.green}
+format-playing-prefix-padding-right = ${paddings.inner}
+format-playing-prefix-padding-left = ${paddings.outer}
+
+format-paused-prefix = ""
+format-paused-prefix-foreground = ${colors.background}
+format-paused-prefix-background = ${colors.dark_yellow}
+format-paused-prefix-padding-right = ${paddings.inner}
+format-paused-prefix-padding-left = ${paddings.outer}
+
+format-stopped-prefix = "ﱢ"
+format-stopped-prefix-foreground = ${colors.background}
+format-stopped-prefix-background = ${colors.dark_red}
+format-stopped-prefix-padding-right = ${paddings.inner}
+format-stopped-prefix-padding-left = ${paddings.outer}
+
+label-song =  %artist% - %title%
+label-song-background = ${colors.black}
+label-song-foreground = ${colors.white}
+label-song-padding-right = ${paddings.outer}
+label-song-padding-left = ${paddings.inner}

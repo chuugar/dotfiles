@@ -1,0 +1,10 @@
+[Unit]
+Description=Offlineimap Query Timer for account %i
+Wants=network-online.target
+
+[Timer]
+OnUnitInactiveSec=15m
+Unit=offlineimap@%i.service
+
+[Install]
+WantedBy=default.target

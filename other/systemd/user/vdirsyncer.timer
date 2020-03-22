@@ -1,0 +1,10 @@
+[Unit]
+Description=Vdirsyncer timer
+Wants=network-online.target
+
+[Timer]
+OnUnitInactiveSec=1h
+Unit=vdirsyncer.service
+
+[Install]
+WantedBy=default.target

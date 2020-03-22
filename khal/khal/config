@@ -1,0 +1,22 @@
+[locale]
+local_timezone = Europe/Paris
+default_timezone = Europe/Paris
+timeformat = %H:%M
+dateformat = %m-%d
+longdateformat = %Y-%m-%d
+datetimeformat = %m-%d %H:%M
+longdatetimeformat = %Y-%m-%d %H:%M
+
+[default]
+default_calendar = personal
+
+
+[calendars]
+
+[[ent]]
+path = ~/.local/share/calendars/revisions/
+type = discover
+
+[[revisions]]
+path = ~/.local/share/calendars/ent/
+type = discover

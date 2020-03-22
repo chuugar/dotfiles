@@ -1,0 +1,305 @@
+# ┌────────┐
+# │ Global │
+# └────────┘
+
+global !p
+# ─────────
+
+import time
+import pathlib
+from unidecode import unidecode
+from subprocess import run
+import sys
+
+
+def today():
+	return "{} {} {}".format(
+		time.strftime('%A').capitalize(),
+		time.strftime('%d'),
+		time.strftime('%B').capitalize(),
+		)
+
+def ltoday():
+	return "{}{}{}".format(
+		time.strftime('%Y').capitalize(),
+		time.strftime('%m'),
+		time.strftime('%d').capitalize(),
+		)
+
+def screenshot(path, snip, t):
+    c = snip.c
+
+    def _recursive_finder(path, target):
+        _path = pathlib.Path(path)
+        _target = pathlib.Path(target)
+        x = []
+
+        if _path.is_file():
+            _path = _path.parent
+
+        for dirf in _path.iterdir():
+            x.append(dirf.name)
+
+        if target in x:
+            return _path.joinpath(target)
+
+        if _path.name == "latex":
+            return
+        else:
+            return _recursive_finder(_path.parent, target)
+
+    _sshot_path = "sshot"  # folder where screenshots are saved
+    _sshot_fn = "sshot" + time.strftime("%Y%m%d%H%M%S") + ".png"
+
+    if not hasattr(snip, "s"):
+        snip.s = ""
+    if c == "":
+        path = pathlib.Path(path).resolve()
+        sshot_fpath = _recursive_finder(path, _sshot_path)
+        sshot_path = sshot_fpath.joinpath(_sshot_fn) # full path for filename
+        run(["maim", "-s", "-b", "10", sshot_path])
+        snip.s = _sshot_path + "/" + _sshot_fn
+    elif c != "" and snip.s != "":
+        return snip.s
+
+def unicode(string):
+	n_s = unidecode(string)
+	n_s = n_s.lower()
+	for c in n_s:
+		if not c.isalpha() or not c.isascii():
+			n_s = n_s.replace(c, "_")
+	return n_s.rstrip()
+
+# ─────────
+endglobal
+
+# ┌────────────────────┐
+# │ Skeletons snippets │
+# └────────────────────┘
+
+snippet sep "Separator" b
+% ─────────
+${0}
+endsnippet
+
+snippet sscom2 "Commentary separator" b
+% ───────────────────────────────────── ──────────────────────────────────── %
+endsnippet
+
+snippet sscom1 "Commentary separator 2" b
+% ────────────────────────────────────────────────────────────────────────── %
+endsnippet
+
+snippet sl "setlength"
+\setlength{\\${1}}{${2}}
+${0}
+endsnippet
+
+snippet ttit "Add table title (first row)"
+\ttit{${1:column_number}}{${2:title}}
+endsnippet 
+
+snippet tstit "Add table subtitle (second row)"
+\tstit{${1:premier titre}}{${2:second titre}}
+endsnippet
+
+snippet tabx "Add tabularx" b
+\begin{table}[h]
+    \begin{tabularx}{\textwidth}{${1:|X|X|}}
+        \hline
+        \ttit{${2}}{${3}} \\\
+        \hline
+        \tstit{${4}}{${5}} \\\
+        \hline
+        ${0} \\\
+        \hline
+    \end{tabularx}
+\end{table}
+endsnippet
+
+snippet og "French guillemets"
+\og ${1} \fg{}${0}
+endsnippet
+
+snippet mco "Multicolumn"
+\multicolumn{${1:number cols}}{${2:align}}{${3:text}}${0}
+endsnippet
+
+snippet mro "Multirow"
+\multirow{${1:-2}}{=}{${2:texte}}${0}
+endsnippet
+
+snippet subfig "Subfigure"
+\begin{figure}[h!tbp]
+\begin{center}
+    \leavevmode
+    \subfloat[${1:Titre}]{%
+        \label{sfig:`!p snip.rv = unicode(t[1])`}
+        \includegraphics[width=6cm,height=6cm]{img/${2:Chemin}}}
+    \subfloat[${3:Titre}]{%
+        \label{sfig:`!p snip.rv = unicode(t[3])`}
+        \includegraphics[width=6cm,height=6cm]{img/${4:Chemin}}}
+\end{center}
+\caption[]{${5:Caption}}
+\label{fig:`!p snip.rv = unicode(t[5])`}
+\end{figure}
+endsnippet
+
+snippet subfloat "Subfloat"
+\subfloat[${1:Titre}]{
+    \label{sfig:`!p snip.rv = unicode(t[1])`}
+    \includegraphics[width=6cm,height=6cm]{img/${2:Chemin}}}
+endsnippet
+
+snippet subref "add subref"
+\subref{${1}} ${0}
+endsnippet
+
+# ┌──────────────┐
+# │ Autosnippets │
+# └──────────────┘
+
+snippet hl "add a row to a table" A
+\\\
+\hline
+${0}
+endsnippet
+
+snippet clc "colorcolum" A
+\cellcolor{${1:black}}${0}
+endsnippet
+
+snippet ii "\item" Am
+
+\item ${0}
+endsnippet
+
+snippet <= "" A
+$\leq$${0}
+endsnippet
+
+snippet >= "" A
+$\geq$${0}
+endsnippet
+
+
+# ┌─────────────────────────┐
+# │ Interpolations snippets │
+# └─────────────────────────┘
+
+snippet bcom "Commentary within a box" b
+% `!p snip.rv = '┌' + '─' * (len(t[1]) + 2) + '┐'`
+% │ $1 │
+% `!p snip.rv = '└' + '─' * (len(t[1]) + 2) + '┘'`
+
+$0
+endsnippet
+
+snippet scom "Sub commentary" b
+%  $1  
+% `!p snip.rv = "─" * (len(t[1]) + 3)`
+$0
+endsnippet
+
+snippet today "Print today date" b
+\section{`!p snip.rv = today()`}
+\label{sec:`!p snip.rv = ltoday()`}
+$0
+endsnippet
+
+snippet sshot "Add screenshot" b
+\begin{figure}[H]
+    \begin{center}
+        \includegraphics[scale=${1:0.7}]{`!p snip.rv = screenshot(path, snip, t)`}
+    \end{center}
+    \label{sshot:`!p snip.rv = unicode(t[2])`}
+    \caption{${2:Caption}}
+\end{figure}
+${0}
+endsnippet
+
+snippet wshot "Add wrapped screenshot" b
+\begin{wrapfigure}{${1:r}}{${2:4cm}}
+    \includegraphics[width={$2},height={$2}]{`!p snip.rv = screenshot(path, snip, t)`}
+    \label{sshot:${3}}
+\end{wrapfigure}
+${0}
+endsnippet
+
+snippet wfig "Add wrapped figure" b
+\begin{wrapfigure}{${1:r}}{${2:4cm}}
+    \includegraphics[width=4cm,height=4cm]{img/${3}}
+    \label{sshot:${4}}
+\end{wrapfigure}
+${0}
+endsnippet
+
+snippet part "begin part" b
+\part{${1}} % (fold)%
+\label{prt:`!p snip.rv = unicode(t[1])`}
+% ────────────────────────────────────────────────────────────────────────── %
+% ───────────────────────────────────── ──────────────────────────────────── %
+
+${0}
+
+% ───────────────────────────────────── ──────────────────────────────────── %
+% ────────────────────────────────────────────────────────────────────────── %
+% part `!p snip.rv = unicode(t[1])` (end)
+endsnippet
+
+snippet cha "begin chap" b
+\chapter{${1:chapter name}}%
+\label{cha:`!p snip.rv = unicode(t[1])`}
+${0}
+endsnippet
+
+snippet sec "begin sec" b
+\section{${1}}%
+\label{sec:`!p snip.rv = unicode(t[1])`}
+${0}
+endsnippet
+
+snippet sub "begin sub" b
+\subsection{${1:subsection name}}%
+\label{sub:`!p snip.rv = unicode(t[1])`}
+${0}
+endsnippet
+
+snippet ssub "begin ssub" b
+\subsubsection{${1:subsubsection name}}%
+\label{ssub:`!p snip.rv = unicode(t[1])`}
+${0}
+endsnippet
+
+snippet par "begin paragraph" b
+\paragraph{${1:paragraph name}}%
+\label{par:`!p snip.rv = unicode(t[1])`}
+${0}
+endsnippet
+
+snippet tbox "add color box" b
+\begin{tcolorbox}[colback=red!5!white,colframe=red!75!black]
+    ${0}
+\end{tcolorbox}
+endsnippet
+
+
+# ┌────────┐
+# │ Visual │
+# └────────┘
+
+snippet ,u
+`!p snip.rv = unicode(snip.v.text)`
+endsnippet
+
+snippet u
+\underline{${VISUAL}}
+endsnippet
+
+snippet b
+\textbf{${VISUAL}}
+endsnippet
+
+snippet e
+\emph{${VISUAL}}
+endsnippet

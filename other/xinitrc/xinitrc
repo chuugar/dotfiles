@@ -1,0 +1,29 @@
+[ -f ~/.config/bash/bash_exports ] && . ~/.config/bash/bash_exports
+[ -f ~/.cache/wal/colors.sh ] && . ~/.cache/wal/colors.sh
+
+(sleep 5 && compton --config ~/.config/compton.conf --backend glx --vsync opengl-swc --no-dock-shadow -b) &
+(sleep 5 && nextcloud) &
+
+xhost +local: &
+dbus-update-activation-environment --systemd DISPLAY
+systemctl --user import-environment DISPLAY
+eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh)
+export SSH_AUTH_SOCK
+(
+    sleep 1
+    syndaemon -di 0.2 &
+    synclient TapButton1=1
+    synclient TapButton2=3
+    synclient TapButton3=2
+    synclient VertScrollDelta=-125
+    synclient HorizScrollDelta=-125
+    synclient MinSpeed=2
+    synclient MaxSpeed=2
+    synclient AccelFactor=0
+    synclient FingerLow=15
+    synclient FingerHigh=20
+    ) &
+
+dbus-launch bspwm
+
+# vim:ft=sh

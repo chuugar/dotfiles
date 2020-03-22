@@ -1,0 +1,62 @@
+[global]
+    font = Roboto 10
+    markup = yes
+    format = "<b>%s</b>\n%b"
+    sort = yes
+    indicate_hidden = yes
+    alignment = left
+    bounce_freq = 0
+    show_age_threshold = 60
+    word_wrap = no
+    ignore_newline = no
+    transparency = 0
+    idle_threshold = 0
+    follow = mouse
+    sticky_history = yes
+    line_height = 5
+    separator_height = 10
+    padding = 10
+    horizontal_padding = 10
+    separator_color = auto
+    startup_notification = false
+    show_indicators = no
+    dmenu = /usr/bin/rofi -dmenu
+    browser = /usr/bin/firefox -new-tab
+    icon_position = left
+    icon_path = /usr/share/icons/gnome/16x16/status/:/usr/share/icons/gnome/16x16/devices/:/home/charles/.config/dunst/
+    max_icon_size = 96
+    frame_color = "#2b303b"
+    frame_width = 0
+
+[shortcuts]
+    close = ctrl+space
+    close_all = ctrl+shift+space
+
+[urgency_low]
+    msg_urgency = low
+    background = "#E8E8E8"
+    foreground = "#000000"
+
+[urgency_normal]
+    msg_urgency = normal
+    background = "#E8E8E8"
+    foreground = "#000000"
+
+[urgency_critical]
+    msg_urgency = critical
+    background = "#bf616a"
+    foreground = "#dfe1e8"
+
+[mpd]
+    appname = mpd
+    format = "<b>%s</b>\n%b"
+    timeout = 3
+
+[newsboat]
+    appname = 
+    urgency = low
+    new_icon = rss
+    format = "<b>%s</b>\n%b"
+    timeout = 10
+
+# vim: ft=cfg

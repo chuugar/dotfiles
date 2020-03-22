@@ -1,0 +1,188 @@
+set nocompatible
+
+
+" ┌─────┐
+" │ XDG │
+" └─────┘
+
+if has('unix')
+    silent !mkdir $XDG_CACHE_HOME/vim/{swapfiles,backup} -p > /dev/null 2>&1
+    silent !touch $XDG_CACHE_HOME/vim/viminfo > /dev/null 2>&1
+
+    set directory=$XDG_CACHE_HOME/vim/swapfiles//
+    set backupdir+=$XDG_CACHE_HOME/vim/backup//
+    set viminfo+=n$XDG_CACHE_HOME/vim/viminfo
+    set path+=$XDG_CONFIG_HOME,$HOME/bin/git/**
+    set path-=/usr/include
+    set packpath=$XDG_CONFIG_HOME/vim/
+    set runtimepath^=$XDG_CONFIG_HOME/vim
+    set runtimepath+=$XDG_CONFIG_HOME/vim/after,
+                \$XDG_CONFIG_HOME/vim/ftplugin,
+                \$XDG_CONFIG_HOME/vim/spell/,
+                \/usr/share/vim-youcompleteme
+    let $MYVIMRC="$XDG_CONFIG_HOME/vim/vimrc"
+endif
+
+
+" ┌────────┐
+" │ Common │
+" └────────┘
+
+filetype plugin indent on
+syntax enable
+
+set shell=/bin/bash
+if $TMUX == ''
+    set clipboard+=unnamedplus
+endif
+set ignorecase
+
+set wrapscan " cycle search
+set hlsearch " highlight search results
+set incsearch " increase search count
+set wildmenu
+set autochdir
+
+
+" ┌─────────┐
+" │ Display │
+" └─────────┘
+
+set relativenumber
+set number
+set ruler
+set ttyfast " terminal acceleration
+set tabstop=4 " 4 whitespaces for tabs visual presentation
+set shiftwidth=4 " shift lines by 4 spaces
+set smarttab " set tabs for a shifttabs logic
+set expandtab " expand tabs into spaces
+set autoindent " indent when moving to the next line while writing code
+set showmatch " show relative ()
+set so=20 " let 10 line before / after cursor during scroll
+
+
+" ┌────────┐
+" │ Colors │
+" └────────┘
+
+try
+    colorscheme wal " https://github.com/dylanaraps/wal.vim
+catch /^Vim\%((\a\+)\)\=:E185/
+    colorscheme default
+    set background=dark
+endtry
+
+
+" ┌───────┐
+" │ Netrw │
+" └───────┘
+
+function ToggleVExplorer()
+  if exists("t:expl_buf_num")
+      let expl_win_num = bufwinnr(t:expl_buf_num)
+      if expl_win_num != -1
+          let cur_win_nr = winnr()
+          exec expl_win_num . 'wincmd w'
+          close
+          exec cur_win_nr . 'wincmd w'
+          unlet t:expl_buf_num
+      else
+          unlet t:expl_buf_num
+      endif
+  else
+      exec '1wincmd w'
+      Vexplore
+      let t:expl_buf_num = bufnr("%")
+  endif
+endfunction
+
+let g:netrw_banner = 0
+let g:netrw_liststyle = 3
+let g:netrw_browse_split = 4
+let g:netrw_altv = 1
+let g:netrw_winsize = 25
+
+
+" ┌───────┐
+" │ cTags │
+" └───────┘
+
+function! DelTagOfFile(file)
+  let fullpath = a:file
+  let cwd = getcwd()
+  let tagfilename = cwd . "/tags"
+  let f = substitute(fullpath, cwd . "/", "", "")
+  let f = escape(f, './')
+  let cmd = 'sed -i "/' . f . '/d" "' . tagfilename . '"'
+  let resp = system(cmd)
+endfunction
+
+function! UpdateTags()
+  let f = expand("%:p")
+  let cwd = getcwd()
+  let tagfilename = cwd . "/tags"
+  let cmd = 'ctags -a -f ' . tagfilename . ' --c++-kinds=+p --fields=+iaS --extra=+q ' . '"' . f . '"'
+  call DelTagOfFile(f)
+  let resp = system(cmd)
+endfunction
+
+
+" ┌──────┐
+" │ Maps │
+" └──────┘
+
+let mapleader=" "
+
+nmap <F4> :call ToggleVExplorer()<CR>
+nmap <F5> :nohlsearch<CR>
+
+nmap <F1> :tabnew<CR>
+nmap <leader><F1> :buffers<CR>
+nmap <leader><F2> :bprevious<CR>
+nmap <leader><F3> :bNext<CR>
+
+map <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
+map <A-]> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
+
+
+" ┌────────────┐
+" │ Statusline │
+" └────────────┘
+
+set laststatus=2
+set statusline=
+set statusline+=%#PmenuSel#
+set statusline+=%#LineNr#
+set statusline+=\ %f
+set statusline+=%m
+set statusline+=%=
+set statusline+=%#CursorColumn#
+set statusline+=\ %y
+set statusline+=\ %{&fileencoding?&fileencoding:&encoding}
+set statusline+=\[%{&fileformat}\]
+set statusline+=\ %p%%
+set statusline+=\ %l:%c
+set statusline+=\ 
+
+
+" ┌─────────┐
+" │ AutoCMD │
+" └─────────┘
+
+augroup myvimrc
+    au!
+    au BufWritePost .vimrc,_vimrc,vimrc,.gvimrc,_gvimrc,gvimrc so $MYVIMRC | if has('gui_running') | so $MYGVIMRC | endif
+augroup END
+
+autocmd BufWritePost *.py call UpdateTags()
+
+
+" ┌─────────┐
+" │ Plugins │
+" └─────────┘
+
+silent! helptags ALL " load documentation from plugins
+
+" UltiSnips
+let g:UltiSnipsSnippetDirectories=[$XDG_CONFIG_HOME.'/vim/mysnippets']
+let g:UltiSnipsExpandTrigger="<c-j>"

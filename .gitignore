@@ -1,0 +1,9 @@
+qutebrowser/qutebrowser/autoconfig.yml
+ranger/ranger/bookmarks
+ranger/ranger/history
+ranger/ranger/plugins/
+ranger/ranger/tagged
+vim/vim/.netrwhist
+vim/vim/.netrwbook
+*iqutefy.py
+*qutewal.py

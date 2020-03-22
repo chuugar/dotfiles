@@ -1,0 +1,63 @@
+# SFR.FR
+# ------------------------------------------------------------------------------
+# +
+
+set sendmail = "/usr/bin/msmtp -C /home/chuugar/.config/msmtp/config -a sfr"
+set use_from = yes
+set realname = "chuugar"
+set from = "X@sfr.fr"
+set envelope_from = yes
+
+set postponed = "~/mails/sfr/DRAFT"
+set trash = "~/mails/sfr/TRASH"
+set record = "~/mails/sfr/OUTBOX"
+
+unmailboxes *
+mailboxes \
+    +sfr/INBOX \
+    +sfr/OUTBOX \
+    +sfr/QUARANTAINE \
+    +sfr/TRASH \
+    +sfr/Mailing.VFIO \
+    +sfr/Mailing.Security \
+    +sfr/Factures \
+    +sfr/Famille_Amis \
+    +sfr/UL2019-2020 \
+    +sfr/Med
+
+
+# GNUPG
+# ------------------------------------------------------------------------------
+# +
+ 
+set pgp_sign_as = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+
+
+# MACROS
+# ------------------------------------------------------------------------------
+# +
+
+
+macro index,pager ,m \
+    "<tag-prefix><save-message>~/mails/sfr/Med<enter>"  \
+        "Déplacer le message vers Médecine"
+
+macro index,pager ,f \
+    "<tag-prefix><save-message>~/mails/sfr/Famille_Amis<enter>"  \
+        "Déplacer le message vers Famille - Amis"
+
+macro index,pager <F5> \
+ "<shell-escape>offlineimap -q -a SFR<enter><enter>"
+
+macro index,pager <Esc><F5> \
+ "<shell-escape>offlineimap -q -a SFR -f INBOX<enter>"
+
+
+# COLORS
+# ------------------------------------------------------------------------------
+# +
+
+color status brightred black
+
+
+# vim: ft=muttrc

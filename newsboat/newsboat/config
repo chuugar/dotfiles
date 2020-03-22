@@ -1,0 +1,69 @@
+#########################
+### NEWSBOAT
+##############
+
+auto-reload yes
+refresh-on-startup yes
+confirm-exit yes
+reload-time 100
+reload-threads 3
+save-path ~/.cache/newsboat/saved_articles
+browser "xdg-open %u &"
+
+# TTRSS
+ttrss-login "admin"
+ttrss-passwordeval "pass www/rss.X.fr"
+ttrss-mode "multi"
+
+ttrss-flag-star "s"
+ttrss-flag-publish "p"
+
+urls-source "ttrss"
+ttrss-url "https://rss.X.fr/"
+
+# DISPLAY
+always-display-description false
+always-download false
+
+
+# PODCAST
+player "umpv &"
+download-path ~/podcasts/
+max-downloads 5
+
+# NOTIFY
+notify-always yes
+notify-format "Newsboat : %n nouveaux articles non lus dans %f feeds non-lus"
+notify-program ~/.config/newsboat/notify.sh
+
+# KEYBINDING
+bind-key ^u mark-all-feeds-read
+
+bind-key k up feedlist
+
+bind-key j next articlelist
+bind-key k prev articlelist
+bind-key J next-feed articlelist
+bind-key K prev-feed articlelist
+
+bind-key j down article
+bind-key k up article
+
+# MACRO
+macro d set browser "tmux new-window && tmux send-key 'youtube-dl %u && exit\n'"; open-in-browser ; set browser "xdg-open %u"
+macro i set browser "sxiv %u"; open-in-browser ; set browser "xdg-open %u"
+macro o set browser "tmux split-window && tmux send-keys 'w3m %u\n' && tmux kill-pane'"; open-in-browser ; set browser "xdg-open %u"
+macro v set browser "umpv %u &"; open-in-browser ; set browser "xdg-open %u"
+
+# COLORS
+color background white black
+color listnormal magenta black dim
+color listnormal_unread green black bold
+color listfocus white green bold
+color listfocus_unread black green bold
+color info black white
+color article white black
+
+highlight article "^(Feed|Link):.*$" red default bold
+highlight article "^(Title|Date|Author):.*$" blue default bold
+highlight article "https?://[^ ]+" red default underline

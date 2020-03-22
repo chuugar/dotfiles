@@ -1,0 +1,11 @@
+[Unit]
+Description=Vdirsyncer Sync service
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+Environment="PASSWORD_STORE_DIR=%h/bin/git/password-store/"
+ExecStart=/usr/bin/vdirsyncer sync
+
+[Install]
+WantedBy=default.target

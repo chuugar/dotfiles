@@ -1,0 +1,351 @@
+[paddings]
+inner = 1
+outer = 1
+
+[colors]
+background = ${xrdb:background}
+foreground = ${xrdb:foreground}
+
+black = ${xrdb:color0}
+dark_grey = ${xrdb:color8}
+
+dark_red = ${xrdb:color1}
+red = ${xrdb:color9}
+
+dark_green = ${xrdb:color2}
+green = ${xrdb:color10}
+
+dark_yellow = ${xrdb:color3}
+yellow = ${xrdb:color11}
+
+dark_blue = ${xrdb:color4}
+blue = ${xrdb:color12}
+
+dark_magenta = ${xrdb:color13}
+magenta = ${xrdb:color5}
+
+dark_cyan = ${xrdb:color14}
+cyan = ${xrdb:color6}
+
+white = ${xrdb:color15}
+
+[bar/main]
+monitor = HDMI1
+monitor-fallback = eDP1
+monitor-strict = true
+dpi = 192
+wm-restack = bspwm
+bottom = false
+
+height = 30
+
+font-0=Sauce\ Code\ Pro\ Nerd\ Font:size=4;2
+font-1=Siji:pixelsize=12;2
+font-2=GohuFont\ Powerline:pixelsize=10;0
+
+module-margin = 0
+offset-y = 10
+separator = " "
+
+modules-left = bspwm
+
+modules-center = mpd
+
+padding-right = 2
+padding-left = 2
+modules-right = wifi pause stop memory volume battery date 
+
+background = "#00000000"
+foreground = ${colors.foreground}
+
+[bar/full]
+inherit = bar/main
+background = ${colors.background}
+offset-y = 0
+padding-right = 0
+padding-left = 0
+separator =
+
+[module/bspwm]
+type = internal/bspwm
+pin-workspaces = true
+
+inline-mode = false
+enable-click = true
+enable-scroll = false
+reverse-scroll = false
+
+ws-icon-0 = I;
+ws-icon-1 = II;
+ws-icon-2 = III;
+ws-icon-3 = IV;
+ws-icon-4 = V;
+ws-icon-5 = VI;
+ws-icon-6 = VII;
+ws-icon-7 = VIII;
+ws-icon-9 = IX;
+ws-icon-8 = X;
+
+format = <label-state> <label-mode>
+label-monitor = %name%
+
+label-dimmed-foreground = #555
+label-dimmed-underline = #3f3f3f
+label-dimmed-focused-background = #f00
+label-dimmed-padding = 2
+
+label-focused = %icon%
+label-focused-foreground = ${colors.background}
+label-focused-background = ${colors.foreground}
+label-focused-padding = 2
+label-empty-padding = 2
+
+label-occupied = %icon%
+label-occupied-underline = #555555
+label-occupied-background = ${colors.background}
+label-occupied-foreground = ${colors.foreground}
+label-occupied-padding = 2
+
+label-urgent = %icon%
+label-urgent-foreground = ${colors.black}
+label-urgent-background = ${colors.red}
+label-urgent-underline = #9b0a20
+label-urgent-padding = 2
+
+label-empty = %icon%
+label-empty-background = ${colors.background}
+label-empty-foreground = ${colors.foreground}
+
+
+[module/wifi]
+type = internal/network
+interface = wlp3s0
+
+label-connected = %essid%
+label-connected-background = ${colors.background}
+label-connected-foreground = ${colors.foreground}
+label-connected-padding-right = ${paddings.outer}
+label-connected-padding-left = ${paddings.inner}
+
+format-connected-prefix =直
+format-connected-prefix-foreground = ${colors.background}
+format-connected-prefix-background = ${colors.foreground}
+format-connected-prefix-padding-right = ${paddings.inner}
+format-connected-prefix-padding-left = ${paddings.outer}
+
+label-disconnected =睊
+label-disconnected-background = ${colors.red}
+label-disconnected-foreground = ${colors.background}
+label-disconnected-padding-right = ${paddings.inner}
+label-disconnected-padding-left = ${paddings.outer}
+
+
+[module/memory]
+type = internal/memory
+
+label = %gb_used%
+label-background = ${colors.background}
+label-foreground = ${colors.foreground}
+label-padding-right = ${paddings.outer}
+label-padding-left = ${paddings.inner}
+
+format-prefix = ""
+format-prefix-foreground = ${colors.background}
+format-prefix-background = ${colors.foreground}
+format-prefix-padding-right = ${paddings.inner}
+format-prefix-padding-left = ${paddings.outer}
+
+
+[module/volume]
+type= internal/pulseaudio
+sink = alsa_output.pci-0000_00_1b.0.analog-stereo
+
+format-volume = <ramp-volume><label-volume>
+format-prefix-foreground = ${colors.background}
+format-prefix-background = ${colors.foreground}
+format-prefix-padding-right = ${paddings.inner}
+format-prefix-padding-left = ${paddings.outer}
+
+label-volume-background = ${colors.background}
+label-volume-foreground = ${colors.foreground}
+label-volume-padding-right = ${paddings.outer}
+label-volume-padding-left = ${paddings.inner}
+
+label-muted = ﱝ
+label-muted-background = ${colors.red}
+label-muted-foreground = ${colors.background}
+label-muted-padding-right = ${paddings.outer}
+label-muted-padding-left = ${paddings.inner}
+
+ramp-volume-0 = 
+ramp-volume-0-background = ${colors.foreground}
+ramp-volume-0-foreground = ${colors.background}
+ramp-volume-0-padding-right = ${paddings.outer}
+ramp-volume-0-padding-left = ${paddings.inner}
+
+ramp-volume-1 = 
+ramp-volume-1-background = ${colors.foreground}
+ramp-volume-1-foreground = ${colors.background}
+ramp-volume-1-padding-right = ${paddings.outer}
+ramp-volume-1-padding-left = ${paddings.inner}
+
+ramp-volume-2 = 
+ramp-volume-2-foreground = ${colors.background}
+ramp-volume-2-background = ${colors.foreground}
+ramp-volume-2-padding-right = ${paddings.outer}
+ramp-volume-2-padding-left = ${paddings.inner}
+
+
+[module/battery]
+type = internal/battery
+battery = BAT0
+adapter = AC
+full-at = 98
+
+label-discharging = "%percentage%%"
+label-discharging-background = ${colors.black}
+label-discharging-foreground = ${colors.white}
+label-discharging-padding-right = ${paddings.outer}
+label-discharging-padding-left = ${paddings.inner}
+
+format-charging = <animation-charging>
+
+format-discharging = <ramp-capacity><label-discharging>
+format-discharging-foreground = ${colors.black}
+format-discharging-background = ${colors.white}
+format-discharging-padding-right = ${paddings.inner}
+format-discharging-padding-left = ${paddings.outer}
+
+format-full = <ramp-capacity>
+
+ramp-capacity-0-background = ${colors.foreground}
+ramp-capacity-1-background = ${colors.foreground}
+ramp-capacity-2-background = ${colors.foreground}
+ramp-capacity-3-background = ${colors.foreground}
+ramp-capacity-4-background = ${colors.foreground}
+ramp-capacity-5-background = ${colors.foreground}
+ramp-capacity-6-background = ${colors.foreground}
+ramp-capacity-7-background = ${colors.foreground}
+ramp-capacity-8-background = ${colors.foreground}
+
+ramp-capacity-9-background = ${colors.green}
+ramp-capacity-9-foreground = ${colors.background}
+
+ramp-capacity-0 = "  " 
+ramp-capacity-1 = "  "
+ramp-capacity-2 = "  "
+ramp-capacity-3 = "  "
+ramp-capacity-4 = "  "
+ramp-capacity-5 = "  "
+ramp-capacity-6 = "  "
+ramp-capacity-7 = "  "
+ramp-capacity-8 = "  "
+ramp-capacity-9 = "  "
+
+animation-charging-0 = "  "
+animation-charging-1 = "  "
+animation-charging-2 = "  "
+animation-charging-3 = "  "
+animation-charging-4 = "  "
+animation-charging-5 = "  "
+animation-charging-6 = "  "
+animation-charging-7 = "  "
+
+animation-charging-0-background = ${colors.foreground}
+animation-charging-1-background = ${colors.foreground}
+animation-charging-2-background = ${colors.foreground}
+animation-charging-3-background = ${colors.foreground}
+animation-charging-4-background = ${colors.foreground}
+animation-charging-5-background = ${colors.foreground}
+animation-charging-6-background = ${colors.foreground}
+animation-charging-7-background = ${colors.foreground}
+animation-charging-8-background = ${colors.foreground}
+
+animation-charging-0-foreground = ${colors.background}
+animation-charging-1-foreground = ${colors.background}
+animation-charging-2-foreground = ${colors.background}
+animation-charging-3-foreground = ${colors.background}
+animation-charging-4-foreground = ${colors.background}
+animation-charging-5-foreground = ${colors.background}
+animation-charging-6-foreground = ${colors.background}
+animation-charging-7-foreground = ${colors.background}
+animation-charging-8-foreground = ${colors.background}
+
+animation-charging-framerate = 1000
+
+
+[module/date]
+type = internal/date
+interval = 60
+
+date = "%a %d"
+date-alt = "%d %b %Y"
+
+time = %H:%M
+
+format-prefix = ""
+format-prefix-foreground = ${colors.background}
+format-prefix-background = ${colors.foreground}
+format-prefix-padding-right = ${paddings.inner}
+format-prefix-padding-left = ${paddings.outer}
+
+label = %time% 
+label-background = ${colors.background}
+label-foreground = ${colors.foreground}
+label-padding-right = ${paddings.outer}
+label-padding-left = ${paddings.inner}
+
+
+[module/mpd]
+type = internal/mpd
+interval = 4
+
+format-online = <label-song>
+format-playing = ${self.format-online}
+format-paused =
+format-stopped =
+
+label-song =  %artist% - %title%
+label-song-maxlen = 50
+label-song-background = ${colors.background}
+label-song-foreground = ${colors.foreground}
+label-song-padding-right = ${paddings.outer}
+label-song-padding-left = ${paddings.inner}
+
+format-playing-prefix = "契"
+format-playing-prefix-foreground = ${colors.background}
+format-playing-prefix-background = ${colors.foreground}
+format-playing-prefix-padding-right = ${paddings.inner}
+format-playing-prefix-padding-left = ${paddings.outer}
+
+
+[module/pause]
+type = internal/mpd
+interval = 4
+
+label-song = 
+label-song-background = ${colors.dark_yellow}
+label-song-foreground = ${colors.background}
+label-song-padding-right = ${paddings.outer}
+label-song-padding-left = ${paddings.inner}
+
+format-online =
+format-playing =
+format-offline =
+format-paused = <label-song>
+
+[module/stop]
+inherit = module/pause
+
+label-song = ﱢ
+label-song-background = ${colors.red}
+
+label-offline = ﱢ
+label-offline-background = ${colors.red}
+
+format-paused =
+format-stopped = <label-song>
+format-offline = <label-offline>
+format-online = <label-song>
+
+; vim:ft=dosini

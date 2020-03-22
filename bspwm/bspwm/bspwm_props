@@ -1,0 +1,45 @@
+if [[ "$HOSTNAME" == "debian" ]]; then
+    BSPWM_C_VERT="DVI-0"
+    BSPWM_C_HORIZ="VGA-0"
+    BSPWM_C_TV="HDMI-0"
+
+    BSPWM_M_VERT="1 2 3 4 5 6 7 8 9"
+    BSPWM_M_HORIZ="I II III IV V VI VII VIII IX"
+    BSPWM_M_TV="X"
+
+    BSPWM_TOP_PADDING=30
+    BSPWM_BOTTOM_PADDING=0
+    BSPWM_LEFT_PADDING=0
+    BSPWM_RIGHT_PADDING=0
+
+    BSPWM_BORDER_WIDTH=9
+    BSPWM_WINDOW_GAP=25
+
+    BSPWM_SPLIT_RATIO=0.65
+
+    DUNST_WIDTH=300
+    DUNST_HEIGHT=100
+    if [[ -f ${HOME}/.cache/wal/colors.sh ]]; then
+        source ${HOME}/.cache/wal/colors.sh
+        BSPWM_DESKTOP_COLOR=${colors3}
+    fi
+elif [[ "$HOSTNAME" == "fremen" ]]; then
+    BSPWM_LAPTOP="I II III IV V VI VII VIII IX"
+    BSPWM_EXTERNAL_MONITOR="X"
+
+    BSPWM_TOP_PADDING=25
+    BSPWM_BOTTOM_PADDING=-5
+    BSPWM_LEFT_PADDING=-5
+    BSPWM_RIGHT_PADDING=-5
+
+    BSPWM_BORDER_WIDTH=5
+    BSPWM_WINDOW_GAP=15
+
+    BSPWM_SPLIT_RATIO=0.65
+    BSPWM_WALLPAPER=""
+
+    DUNST_WIDTH=300
+    DUNST_HEIGHT=100
+fi
+
+# vim: ft=sh

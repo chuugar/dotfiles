@@ -1,0 +1,11 @@
+[Unit]
+Description=Offlineimap Service for account %i
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+Environment="PASSWORD_STORE_DIR=%h/bin/git/password-store/"
+ExecStart=/bin/bash -c "/usr/bin/offlineimap -o -a %i -u syslog"
+
+[Install]
+WantedBy=default.target

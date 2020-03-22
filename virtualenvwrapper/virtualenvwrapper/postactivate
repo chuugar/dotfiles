@@ -1,0 +1,5 @@
+#!/bin/bash
+# This hook is sourced after every virtualenv is activated.
+
+PROJECT=${HOME}/bin/git/$(basename ${VIRTUAL_ENV})
+[[ -d ${PROJECT} ]] && cd $PROJECT

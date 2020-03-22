@@ -1,0 +1,23 @@
+defaults
+auth           on
+tls            on
+tls_trust_file /etc/ssl/certs/ca-certificates.crt
+logfile        ~/.config/msmtp/msmtp.log
+
+# SFR
+account        sfr
+host           smtp.sfr.fr
+port           587
+from           X@sfr.fr
+user           X@sfr.fr
+passwordeval   pass mails/X@sfr.fr
+
+account        ul
+host           smtp.etu.univ-lorraine.fr
+port           587
+from           X
+user           X@etu.univ-lorraine.fr
+passwordeval   pass mails/X@etu.univ-lorraine.fr
+
+# Set a default account
+account default : sfr

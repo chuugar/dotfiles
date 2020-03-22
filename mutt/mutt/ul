@@ -1,0 +1,64 @@
+# ETU.UNIV-LORRAINE.FR
+# ------------------------------------------------------------------------------
+# +
+
+set sendmail = "/usr/bin/msmtp -C /home/chuugar/.config/msmtp/config -a ul"
+set use_from = yes
+set realname = "chuugar"
+set from="X@etu.univ-lorraine.fr"
+set envelope_from = yes
+
+set postponed="~/mails/ul/Brouillons"
+set trash="~/mails/ul/Corbeille"
+set record="~/mails/ul/Sent"
+
+unmailboxes *
+mailboxes \
+    +ul/Brouillons \
+    +ul/Contacts \
+    +ul/Drafts \
+    +ul/INBOX \
+    +ul/Sent \
+    +ul/Chats \
+    +ul/Corbeille \
+    +ul/Emailed \
+    +ul/Contacts \
+    +ul/Junk \
+    +ul/Trash
+
+
+# GNUPG
+# ------------------------------------------------------------------------------
+# +
+
+unset pgp_sign_as
+
+
+# MACROS
+# ------------------------------------------------------------------------------
+# +
+
+
+macro index,pager <F5> \
+ "<shell-escape>offlineimap -qu quiet -a UL<enter>"
+
+macro index,pager <Esc><F5> \
+ "<shell-escape>offlineimap -q -f INBOX -a UL<enter>"
+
+macro index,pager ,u \
+    "<tag-prefix><save-message>~/mails/sfr/UL2019-2020<enter>"  \
+        "Déplacer le message vers UL2019-2020"
+
+macro index,pager ,m \
+    "<tag-prefix><save-message>~/mails/sfr/Med<enter>"  \
+        "Déplacer le message vers Médecine"
+
+
+# COLORS
+# ------------------------------------------------------------------------------
+# +
+
+color status brightyellow black
+
+
+# vim: ft=muttrc

@@ -1,0 +1,132 @@
+#!/bin/bash
+
+source ~/.config/bash/bash_aliases
+source ~/.config/bash/bash_exports
+source ~/.config/bash/bash_functions
+source ~/.config/bspwm/bspwm_props
+
+wal -R -o ~/.config/wal/reload_hook.sh &
+xrdb -merge ~/.Xresources
+xsetroot -cursor_name left_ptr &
+numlockx on &
+setxkbmap fr -variant oss
+
+mpdnotify -m ~/musique &
+devmon &
+redshift &
+
+bspc config remove_unplugged_monitors true
+bspc config remove_disabled_monitors true
+bspc config borderless_monocle true
+bspc config gapless_monocle false
+bspc config focus_follows_pointer true
+
+[[ -n ${BSPWM_WALLPAPER} ]] && hsetroot -fill ${BSPWM_WALLPAPER}
+
+source ${HOME}/.cache/wal/colors.sh
+bspc config normal_border_color ${color0}
+bspc config active_border_color ${color9}
+bspc config focused_border_color ${color7}
+
+if [[ $HOSTNAME == "fremen" ]]; then
+    if xrandr | grep "HDMI1 connected" >/dev/null; then
+        bspc monitor HDMI1 -d ${BSPWM_LAPTOP}
+        bspc monitor eDP1 -d ${BSPWM_EXTERNAL_MONITOR}
+    else
+        bspc monitor eDP1 -d ${BSPWM_LAPTOP} ${BSPWM_EXTERNAL_MONITOR}
+    fi
+
+    bspc config top_padding ${BSPWM_TOP_PADDING}
+    bspc config right_padding ${BSPWM_RIGHT_PADDING}
+    bspc config bottom_padding ${BSPWM_BOTTOM_PADDING}
+    bspc config left_padding ${BSPWM_LEFT_PADDING}
+
+    bspc config border_width ${BSPWM_BORDER_WIDTH}
+    bspc config window_gap ${BSPWM_WINDOW_GAP}
+
+    bspc config split_ratio ${BSPWM_WINDOW_GAP}
+
+    bspc rule -a libreoffice-writer:* desktop='I' state=tiled
+    bspc rule -a *:zathura desktop='I' state=tiled \
+        split_dir=east follow=on
+    bspc rule -a "Tor Browser" desktop='II' state=tiled
+    bspc rule -a ranger desktop='III' state=tiled \
+        private=on locked=on
+    bspc rule -a neomutt desktop='IV' state=tiled \
+        private=on locked=on split_ratio=0.25 split_dir=north
+    bspc rule -a ikhal desktop='IV' state=tiled \
+        private=on locked=on split_ratio=0.75 split_dir=south
+    bspc rule -a vim desktop='V' state=tiled \
+        private=on locked=on split_dir=south
+    bspc rule -a ncmpcpp desktop='VI' state=tiled \
+        private=on locked=on split_dir=north split_ratio=0.25
+    bspc rule -a pulsemixer desktop='VI' state=tiled \
+        private=on locked=on split_ratio=0.75 split_dir=south
+    bspc rule -a newsboat desktop='VII' state=tiled \
+        private=on locked=on
+    bspc rule -a Wine desktop='X' state=tiled private=on 
+
+    MPV_HEIGHT=250
+    MPV_WIDTH=440
+    SCREEN_WIDTH=1366
+    SCREEN_HEIGHT=768
+    BOTTOM_RIGHT_X=$(( ${SCREEN_WIDTH} + ${BSPWM_WINDOW_GAP} + ${BSPWM_LEFT_PADDING} - ${MPV_WIDTH}))
+    BOTTOM_RIGHT_Y=$(( ${SCREEN_HEIGHT} - ${BSPWM_WINDOW_GAP} - ${BSPWM_LEFT_PADDING} - ${MPV_HEIGHT}))
+    WINDOW_POSITION="${MPV_WIDTH}x${MPV_HEIGHT}+${BOTTOM_RIGHT_X}+${BOTTOM_RIGHT_Y}"
+    bspc rule -a mpv state=floating rectangle=${WINDOW_POSITION} layer=above sticky=on
+
+    bspc rule -a anki:Ajouter split_ratio=0.8 split_dir=south
+    bspc rule -a *:nextcloud state=tiled desktop='I'
+
+    sxhkd -c /home/charles/.config/sxhkd/sxhkdrc.laptop &
+    ${HOME}/.local/bin/polybar -c ~/.config/polybar/config.laptop main &
+    if [[ "$(cat /sys/class/power_supply/AC/online)" == "0" ]]; then
+        xset s 60
+    fi
+fi
+
+if [[ ${HOSTNAME} == "debian" ]]; then
+    sxhkd -c ${XDG_CONFIG_HOME}/sxhkd/sxhkdrc.desktop &
+    ${XDG_CONFIG_HOME}/bspwm/scripts/monitors_switch.sh -d
+
+    bspc config border_width ${BSPWM_BORDER_WIDTH}
+    bspc config window_gap ${BSPWM_WINDOW_GAP}
+
+    bspc config split_ratio ${BSPWM_SPLIT_RATIO}
+    bspc config initial_polarity second_child
+
+    bspc rule -a Navigator desktop='II' state=tiled
+    bspc rule -a ranger desktop='3' state=tiled \
+        private=on locked=on
+    bspc rule -a neomutt desktop='4' state=tiled \
+        private=on locked=on
+    bspc rule -a ikhal desktop='4' state=tiled \
+        private=on locked=on
+    bspc rule -a vim desktop='5' state=tiled \
+        private=on locked=on
+    bspc rule -a ncmpcpp desktop='6' state=tiled \
+        private=on locked=on 
+    bspc rule -a pulsemixer desktop='6' state=tiled \
+        private=on locked=on split_ratio=0.8 split_dir=south
+    bspc rule -a newsboat desktop='7' state=tiled \
+        private=on locked=on
+    bspc rule -a *:zathura desktop='1' state=tiled
+    bspc rule -a Kodi:* desktop='X' state=sticky
+
+    polybar -c ${XDG_CONFIG_HOME}/polybar/config.desktop main &
+    polybar -c ${XDG_CONFIG_HOME}/polybar/config.desktop lite &
+fi
+
+(
+    sleep 1 ;
+    for i in ranger neomutt ikhal vim ncmpcpp pulsemixer newsboat; do
+        sleep 1
+        if command -v ${i} > /dev/null; then
+            tmux has-session -t ${i} && kitty --class ${i} \
+                bash -ic "tmux -f ${XDG_CONFIG_HOME}/tmux/tmux.conf -2 attach -t ${i}" &
+            tmux has-session -t ${i} || kitty --class ${i} \
+                bash -ic "tmux -f ${XDG_CONFIG_HOME}/tmux/tmux.conf -2 new-session -n ${i} -s ${i} ${i}" &
+        fi
+    done
+    ) &
+
